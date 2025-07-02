@@ -33,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
   BookShelf.associate = function (models) {
     BookShelf.belongsTo(models.User, {
       foreignKey: "userId",
-      as: "user",
+      as: "bookshelf",
     });
 
     BookShelf.belongsTo(models.Book, {

@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
   ReviewLike.associate = function (models) {
     ReviewLike.belongsTo(models.User, {
       foreignKey: "userId",
-      as: "user",
+      as: "userreviewlikes",
     });
 
     ReviewLike.belongsTo(models.Review, {

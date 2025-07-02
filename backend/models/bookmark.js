@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
   BookMark.associate = function (models) {
     BookMark.belongsTo(models.User, {
       foreignKey: "userId",
-      as: "user",
+      as: "userbookmarks",
     });
 
     BookMark.belongsTo(models.Book, {

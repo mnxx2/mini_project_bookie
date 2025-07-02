@@ -35,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
 
     User.hasMany(models.Review, {
       foreignKey: "userId",
-      as: "reviews",
+      as: "userreviews",
     });
 
     User.hasMany(models.BookLike, {
@@ -45,12 +45,12 @@ module.exports = (sequelize, DataTypes) => {
 
     User.hasMany(models.BookMark, {
       foreignKey: "userId",
-      as: "bookmarks",
+      as: "userbookmarks",
     });
 
     User.hasMany(models.ReviewLike, {
       foreignKey: "userId",
-      as: "reviewlikes",
+      as: "userreviewlikes",
     });
   };
 
