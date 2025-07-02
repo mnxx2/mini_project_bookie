@@ -1,5 +1,7 @@
+require("dotenv").config();
 const models = require("../models");
 
+// 카카오 api 를 사용해 책 검색 목록 조회
 exports.searchBooks = async (req, res) => {
   const query = req.query.query;
 
@@ -24,11 +26,12 @@ exports.searchBooks = async (req, res) => {
     res.json(data.documents);
   } catch (error) {
     console.error("Kakao API Error:", error.message);
+    console.log("authorization key : " + process.env.API_KEY);
     res.status(500).json({ message: "카카오 API 요청 실패" });
   }
 };
 
-// 책을 선택하면 books, bookshelves 테이블에 저장 POST
+// 책을 선택하면 books 테이블에 저장 POST
 exports.addBook = async (req, res) => {
   try {
     const isbn = req.params.isbn;
@@ -79,35 +82,8 @@ exports.addBook = async (req, res) => {
       });
     }
 
-    // user 정보가 있는지 확인 후 없으면 user 생성
-    let user = await models.User.findOne({
-      where: { email: "saltbready@example.com" },
-    });
-
-    if (!user) {
-      user = await models.User.create({
-        name: "소금빵",
-        email: "saltbready@example.com",
-        password: "12345678",
-      });
-    }
-
-    // bookshelves 테이블에 추가
-    // userid, bookid로 중복 체크
-    const bookshelf = await models.BookShelf.findOne({
-      where: { userId: user.id, bookId: book.id },
-    });
-
-    if (bookshelf) {
-      return res.status(404).json({ message: "이미 책장에 추가된 책입니다." });
-    }
-
-    const bookshelfItem = await models.BookShelf.create({
-      userId: user.id,
-      bookId: book.id,
-    });
-
-    res.status(201).json({ message: "선택한 책이 책장에 추가되었습니다." });
+    // req.book = book;
+    res.status(200).json({ message: "OK", data: book });
   } catch (error) {
     console.error(error);
     res.status(404).json({ message: "책 저장 실패" });
