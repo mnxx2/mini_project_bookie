@@ -4,13 +4,19 @@ const models = require("./models");
 const path = require("path");
 const app = express();
 const PORT = process.env.PORT || 3000;
-const bookRouter = require("./routes/books");
+const booksRouter = require("./routes/books");
 const shelvesRouter = require("./routes/bookshelves");
+const reviewsRouter = require("./routes/reviews");
+const usersRouter = require("./routes/users");
+const authRouter = require("./routes/auth");
 
 app.use(express.json());
 
-app.use("/books", bookRouter);
+app.use("/books", booksRouter);
 app.use("/bookshelves", shelvesRouter);
+app.use("/reviews", reviewsRouter);
+app.use("/users", usersRouter);
+app.use("/auth", authRouter);
 
 app.listen(PORT, () => {
   console.log(`Bookie 서버가 http://localhost:${PORT}에서 실행중 입니다.`);
