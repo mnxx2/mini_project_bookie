@@ -8,5 +8,6 @@ router.post("/:bookId", authenticate, shelvesController.addBookToBookShelves);
 router.get("/", authenticate, shelvesController.getShelvesAll);
 router.put("/:id", authenticate, shelvesController.updateBookReport);
 router.get("/books/:id", authenticate, shelvesController.getBookOne);
+router.delete("/books/:id", authenticate, shelvesController.deleteBookshelf);
 
 module.exports = router;

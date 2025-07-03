@@ -9,6 +9,7 @@ const shelvesRouter = require("./routes/bookshelves");
 const reviewsRouter = require("./routes/reviews");
 const usersRouter = require("./routes/users");
 const authRouter = require("./routes/auth");
+const booklikesRouter = require("./routes/booklikes");
 
 app.use(express.json());
 
@@ -17,6 +18,7 @@ app.use("/bookshelves", shelvesRouter);
 app.use("/reviews", reviewsRouter);
 app.use("/users", usersRouter);
 app.use("/auth", authRouter);
+app.use("/booklikes", booklikesRouter);
 
 app.listen(PORT, () => {
   console.log(`Bookie 서버가 http://localhost:${PORT}에서 실행중 입니다.`);

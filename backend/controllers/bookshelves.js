@@ -97,7 +97,7 @@ exports.deleteBookshelf = async (req, res) => {
 
   const result = await models.BookShelf.findByPk(id);
 
-  if (result > 0) {
+  if (result) {
     res.status(200).json({ message: "독후감을 삭제했습니다." });
   } else {
     res.status(404).json({ message: "이미 책장에 존재하지 않는 책입니다." });
