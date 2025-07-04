@@ -1,12 +1,12 @@
 const models = require("../models");
 
-exports.toggleBooklike = async (req, res) => {
+exports.toggleReviewlike = async (req, res) => {
   const userId = req.user.id;
-  const bookId = req.params.bookId;
+  const reviewId = req.params.reviewId;
 
   try {
-    const [like, created] = await models.BookLike.findOrCreate({
-      where: { userId, bookId },
+    const [like, created] = await models.ReviewLike.findOrCreate({
+      where: { userId, reviewId },
     });
 
     // 좋아요 -> 좋아요 삭제
@@ -23,17 +23,22 @@ exports.toggleBooklike = async (req, res) => {
   }
 };
 
-// 내가 좋아요한 책들
-exports.getBooklikeAll = async (req, res) => {
+// 내가 좋아요한 리뷰들
+exports.getReviewlikeAll = async (req, res) => {
   const userId = req.user.id;
 
-  const likes = await models.BookLike.findAll({
+  const likes = await models.ReviewLike.findAll({
     where: { userId },
     include: [
       {
-        model: models.Book,
-        as: "booklikes",
-        attributes: ["title", "authors", "thumbnail"],
+        model: models.Review,
+        as: "review",
+        attributes: ["content", "rating"],
+      },
+      {
+        model: models.User,
+        as: "userreviewlikes",
+        attributes: ["name"],
       },
     ],
   });

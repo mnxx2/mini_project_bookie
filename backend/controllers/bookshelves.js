@@ -20,11 +20,21 @@ exports.getShelvesAll = async (req, res) => {
 exports.addBookToBookShelves = async (req, res) => {
   try {
     const bookId = req.params.bookId;
+    const userId = req.user.id;
+
+    // 내가 저장한 책만 책장에 저장
+    const myBook = await models.Book.findOne({
+      where: { id: { bookId, userId } },
+    });
+
+    if (!myBook) {
+      res.status(404).json({ message: "내가 저장한 책만 추가할 수 있습니다." });
+    }
 
     // bookshelves 테이블에 추가
     // userid, bookid로 중복 체크
     const bookshelf = await models.BookShelf.findOne({
-      where: { userId: req.user.id, bookId: bookId },
+      where: { id: { userId, bookId } },
     });
 
     if (bookshelf) {

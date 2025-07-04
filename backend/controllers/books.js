@@ -34,6 +34,7 @@ exports.searchBooks = async (req, res) => {
 exports.addBook = async (req, res) => {
   try {
     const isbn = req.params.isbn;
+    const userId = req.user.id;
 
     const response = await fetch(
       `https://dapi.kakao.com/v3/search/book?query=${isbn}`,
@@ -70,7 +71,8 @@ exports.addBook = async (req, res) => {
 
     // authors가 배열이면 JSON 문자열로 변환해서 저장
     const authorsStr = Array.isArray(bookData.authors)
-      ? JSON.stringify(bookData.authors)
+      ? // ? JSON.stringify(bookData.authors)
+        bookData.authors.join(", ")
       : bookData.authors;
 
     // isbn 중복 체크
@@ -85,6 +87,7 @@ exports.addBook = async (req, res) => {
         isbn: isbn13,
         thumbnail: bookData.thumbnail,
         contents: bookData.contents,
+        userId,
       });
     }
 
@@ -92,7 +95,7 @@ exports.addBook = async (req, res) => {
     res.status(200).json({ message: "OK", data: book });
   } catch (error) {
     console.error(error);
-    res.status(404).json({ message: "책 저장 실패" });
+    res.status(404).json({ message: "이미 저장한 책입니다." });
   }
 };
 
@@ -135,5 +138,21 @@ exports.getBook = async (req, res) => {
     res
       .status(500)
       .json({ message: "카카오 API 요청 실패. 책 정보를 불러올 수 없습니다." });
+  }
+};
+
+// 최근에 본 책들 목록
+exports.getRecentBooks = async (req, res) => {
+  const userId = req.user.id;
+
+  const books = await models.Book.findAll({
+    where: { userId },
+    order: [["createdAt", "DESC"]],
+  });
+
+  if (books) {
+    res.status(200).json({ message: "OK", data: books });
+  } else {
+    res.status(404).json({ message: "최근에 본 책들이 없습니다." });
   }
 };

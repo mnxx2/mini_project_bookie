@@ -25,6 +25,10 @@ module.exports = (sequelize, DataTypes) => {
       contents: {
         type: DataTypes.TEXT,
       },
+      userId: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
     },
     {
       tableName: "books",
@@ -50,6 +54,11 @@ module.exports = (sequelize, DataTypes) => {
     Book.hasMany(models.Review, {
       foreignKey: "bookId",
       as: "bookreviews",
+    });
+
+    Book.hasMany(models.User, {
+      foreignKey: "userId",
+      as: "hasbooks",
     });
   };
 

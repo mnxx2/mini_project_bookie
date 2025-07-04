@@ -10,9 +10,13 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
+      ownerId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
     },
     {
-      talbeName: "review_likes",
+      tableName: "review_likes",
     }
   );
 
@@ -20,6 +24,11 @@ module.exports = (sequelize, DataTypes) => {
     ReviewLike.belongsTo(models.User, {
       foreignKey: "userId",
       as: "userreviewlikes",
+    });
+
+    ReviewLike.belongsTo(models.User, {
+      foreignKey: "ownerId",
+      as: "owner",
     });
 
     ReviewLike.belongsTo(models.Review, {
